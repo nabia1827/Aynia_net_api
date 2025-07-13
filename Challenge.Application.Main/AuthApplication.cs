@@ -23,33 +23,31 @@ namespace Challenge.Application.Main
         public async Task<Response<UserDto>> Authenticate(string username, string password)
         {
             var response = new Response<UserDto>();
-
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                response.IsSuccess = false;
-                response.Message = "Username and password cannot be empty.";
-                return response;
-            }
-
-            var usuario = await _authDomain.GetHashPasswordByUsername(username);
-            if (usuario == null)
-            {
-                response.IsSuccess = false;
-                response.Message = "Incorrect username and/or password.";
-                return response;
-            }
-
-            var hashedPassword = usuario.ContrasenaHash;
-            var verifyPassword = _passwordHasher.VerifyHashedPassword(hashedPassword, password);
-            if (!verifyPassword)
-            {
-                response.IsSuccess = false;
-                response.Message = "Incorrect username and/or password.";
-                return response;
-            }
-
             try
             {
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Username and password cannot be empty.";
+                    return response;
+                }
+
+                var usuario = await _authDomain.GetHashPasswordByUsername(username);
+                if (usuario == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Incorrect username and/or password.";
+                    return response;
+                }
+
+                var hashedPassword = usuario.ContrasenaHash;
+                var verifyPassword = _passwordHasher.VerifyHashedPassword(hashedPassword, password);
+                if (!verifyPassword)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Incorrect username and/or password.";
+                    return response;
+                }
                 var user = await _authDomain.Authenticate(username, hashedPassword);
                 response.Data = _mapper.Map<UserDto>(user);
                 response.IsSuccess = true;
@@ -63,6 +61,7 @@ namespace Challenge.Application.Main
             catch (Exception e)
             {
                 response.Message = e.Message;
+                response.Message = "User does not exist.";
             }
             return response;
         }
