@@ -26,7 +26,9 @@ namespace Challenge.Services.WebApi.Modules.Injection
             services.AddScoped<IAuthDomain, AuthDomain>();
             services.AddScoped<IAuthRepository, AuthRepository>();
 
-            
+            services.AddScoped<IDashboardApplication, DashboardApplication>();
+            services.AddScoped<IDashboardDomain, DashboardDomain>();
+            services.AddScoped<IDashboardRepository, DashboardRepository>();
 
             services.AddScoped<IPasswordHasher, PasswordHasher>();
 
