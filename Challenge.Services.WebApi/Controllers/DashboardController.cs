@@ -4,6 +4,9 @@ using Challenge.Services.WebApi.Models.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.IO;
+
+
 
 namespace Challenge.Services.WebApi.Controllers
 {
@@ -44,5 +47,21 @@ namespace Challenge.Services.WebApi.Controllers
             var response = await _application.ListLeads(req.empresaId, req.productoId??0, req.estado??"");
             return Ok(response);
         }
+
+        [HttpPost("ExportMonthlyLeads")]
+        public async Task<IActionResult> ExportMonthlyLeads(string estado, int productoId)
+        {
+            var response = await _application.ExportMonthlyLeads(estado, productoId);
+
+            string fileName = "EXCEL-" + DateTime.Now.ToString() + ".xlsx";
+            string fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+            if (response.IsSuccess)
+                return File(response.Data, fileType, fileName);
+
+            return BadRequest("No se pudo descargar el Excel");
+
+        }
+
     }
 }
