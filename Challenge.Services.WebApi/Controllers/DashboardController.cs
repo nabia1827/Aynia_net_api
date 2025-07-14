@@ -1,5 +1,6 @@
 ﻿using Challenge.Application.Interface;
 using Challenge.Services.WebApi.Helpers;
+using Challenge.Services.WebApi.Models.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -18,6 +19,30 @@ namespace Challenge.Services.WebApi.Controllers
         {
             _application = application;
             _appSettings = appSettings.Value;
+        }
+
+        [HttpGet("ListAlertas")]
+        public async Task<IActionResult> ListAlertas(int rolId)
+        {
+            if (rolId ==0)
+            {
+                return BadRequest();
+            }
+
+            var response = await _application.ListAlertas(rolId);
+            return Ok(response);
+        }
+
+        [HttpGet("ListLeads")]
+        public async Task<IActionResult> ListLeads([FromQuery]ReporteLeadsRequest req)
+        {
+            if (req.estado == null)
+            {
+                req.estado = string.Empty;
+            }
+
+            var response = await _application.ListLeads(req.empresaId, req.productoId??0, req.estado??"");
+            return Ok(response);
         }
     }
 }
