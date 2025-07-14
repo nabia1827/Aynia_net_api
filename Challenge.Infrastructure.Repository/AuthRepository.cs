@@ -1,11 +1,11 @@
-﻿using Challenge.Domain.Entity;
-using Challenge.Infrastructure.Data;
-using Challenge.Infrastructure.Interface;
-using Dapper;
-using System.Data;
+﻿    using Challenge.Domain.Entity;
+    using Challenge.Infrastructure.Data;
+    using Challenge.Infrastructure.Interface;
+    using Dapper;
+    using System.Data;
 
-namespace Challenge.Infrastructure.Repository
-{
+    namespace Challenge.Infrastructure.Repository
+    {
     public class AuthRepository : IAuthRepository
     {
         private readonly DapperContext _context;
@@ -66,5 +66,9 @@ namespace Challenge.Infrastructure.Repository
 
             return result;
         }
+        
+
     }
+    
+   
 }

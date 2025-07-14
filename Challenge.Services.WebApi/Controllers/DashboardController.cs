@@ -1,8 +1,10 @@
 ﻿using Challenge.Application.Interface;
+using Challenge.Application.Main;
 using Challenge.Services.WebApi.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Challenge.Services.WebApi.Controllers
 {
@@ -18,6 +20,28 @@ namespace Challenge.Services.WebApi.Controllers
         {
             _application = application;
             _appSettings = appSettings.Value;
+        }
+
+        [HttpGet("CountLeadsCurrentMonth")]
+        public async Task<IActionResult> CountLeadsCurrentMonth()
+        {
+            var response = await _application.CountLeadsCurrentMonth();
+
+            return Ok(response);
+        }
+
+        [HttpGet("GetLeadCountByPlan")]
+        public async Task<IActionResult> GetLeadCountByPlan(int empresaId)
+        {
+            if (empresaId <= 0 || empresaId == null)
+                return BadRequest();
+
+            var response = await _application.GetLeadCountByPlan((int)empresaId);
+            if (response.IsSuccess)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response.Message);
         }
     }
 }

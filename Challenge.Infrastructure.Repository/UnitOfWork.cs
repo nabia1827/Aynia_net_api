@@ -19,5 +19,6 @@ namespace Challenge.Infrastructure.Repository
             Dashboard = dashboard;
 
         }
+
     }
 }

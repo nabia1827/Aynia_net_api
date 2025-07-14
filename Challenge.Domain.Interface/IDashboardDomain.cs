@@ -8,5 +8,8 @@ namespace Challenge.Domain.Interface
 {
     public interface IDashboardDomain
     {
+        Task<int> CountLeadsCurrentMonth();
+
+        Task<int> GetLeadCountByPlan(int empresaId);
     }
 }
