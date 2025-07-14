@@ -49,9 +49,14 @@ namespace Challenge.Services.WebApi.Controllers
         }
 
         [HttpPost("ExportMonthlyLeads")]
-        public async Task<IActionResult> ExportMonthlyLeads(string estado, int productoId)
+        public async Task<IActionResult> ExportMonthlyLeads([FromQuery] ReporteLeadsRequest req)
         {
-            var response = await _application.ExportMonthlyLeads(estado, productoId);
+            if (req.estado == null)
+            {
+                req.estado = string.Empty;
+            }
+
+            var response = await _application.ExportMonthlyLeads(req.empresaId, req.estado ?? "", req.productoId ?? 0);
 
             string fileName = "EXCEL-" + DateTime.Now.ToString() + ".xlsx";
             string fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";

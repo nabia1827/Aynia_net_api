@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
+using System.Reflection;
 
 namespace Challenge.Application.Main
 {
@@ -71,50 +72,49 @@ namespace Challenge.Application.Main
             }
             return response;
         }
-        public async Task<Response<byte[]>> ExportMonthlyLeads(string estado, int productoId)
+        public async Task<Response<byte[]>> ExportMonthlyLeads(int empresaId, string estado, int productoId)
         {
             var response = new Response<byte[]>();
             try
             {
-                var leads = new List<(string Nombre, string Correo, string Producto)>
-                {
-                    ("Juan Perez", "juan.perez@ejemplo.com", "Seguro Hogar"),
-                    ("Ana Gómez", "ana.gomez@ejemplo.com", "Crédito Personal"),
-                    ("Carlos Ruiz", "carlos.ruiz@ejemplo.com", "Cuenta Corriente")
-                };
+                var leads = await ListLeads(empresaId, productoId, estado);
+                var data = leads.Data;
 
                 using var workbook = new XLWorkbook();
                 var worksheet = workbook.Worksheets.Add("Leads");
 
-                // Cabeceras
-                worksheet.Cell("A1").Value = "Nombre";
-                worksheet.Cell("B1").Value = "Correo";
-                worksheet.Cell("C1").Value = "Producto";
+                var propiedades = typeof(ReporteLeadWrapper).GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-                // Formato cabecera: negrita, fondo azul, texto blanco, centrado y bordes
-                var headerRange = worksheet.Range("A1:C1");
-                headerRange.Style.Font.Bold = true;
-                headerRange.Style.Fill.BackgroundColor = XLColor.DarkBlue;
-                headerRange.Style.Font.FontColor = XLColor.White;
-                headerRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                headerRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                headerRange.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
-
-                for (int i = 0; i < leads.Count; i++)
+                for (int i = 0; i < propiedades.Length; i++)
                 {
-                    int row = i + 2;
-                    worksheet.Cell(row, 1).Value = leads[i].Nombre;
-                    worksheet.Cell(row, 2).Value = leads[i].Correo;
-                    worksheet.Cell(row, 3).Value = leads[i].Producto;
+                    var cell = worksheet.Cell(1, i + 1);
+                    cell.Value = propiedades[i].Name;
 
-                    var rowRange = worksheet.Range(row, 1, row, 3);
-                    rowRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                    rowRange.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
-                    rowRange.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-                    rowRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                    cell.Style.Font.Bold = true;
+                    cell.Style.Fill.BackgroundColor = XLColor.DarkBlue;
+                    cell.Style.Font.FontColor = XLColor.White;
+                    cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                    cell.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
                 }
 
-                worksheet.Columns(1, 3).AdjustToContents();
+                for (int row = 0; row < data.Count; row++)
+                {
+                    var item = data[row];
+                    for (int col = 0; col < propiedades.Length; col++)
+                    {
+                        var value = propiedades[col].GetValue(item);
+                        var cell = worksheet.Cell(row + 2, col + 1);
+                        cell.Value = value?.ToString() ?? "";
+
+                        cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                        cell.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+                        cell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                        cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                    }
+                }
+
+                worksheet.Columns().AdjustToContents();
 
                 using var stream = new MemoryStream();
                 workbook.SaveAs(stream);
