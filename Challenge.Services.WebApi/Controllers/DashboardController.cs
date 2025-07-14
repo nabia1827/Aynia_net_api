@@ -1,4 +1,5 @@
 ﻿using Challenge.Application.Interface;
+using Challenge.Application.Wrapper;
 using Challenge.Services.WebApi.Helpers;
 using Challenge.Services.WebApi.Models.Requests;
 using Microsoft.AspNetCore.Authorization;
@@ -68,5 +69,16 @@ namespace Challenge.Services.WebApi.Controllers
 
         }
 
+        [HttpGet("ListIncomes")]
+        public async Task<IActionResult> ListIncomes(int empresaId)
+        {
+            if (empresaId == 0)
+            {
+                return BadRequest();
+            }
+
+            var response = await _application.ListIncomes(empresaId);
+            return Ok(response);
+        }
     }
 }

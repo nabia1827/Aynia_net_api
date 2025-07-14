@@ -15,5 +15,7 @@ namespace Challenge.Application.Interface
         Task<Response<List<ReporteLeadWrapper>>> ListLeads(int empresaId, int productoId, string estado);
         Task<Response<List<AlertaDto>>> ListAlertas(int rolId);
         Task<Response<byte[]>> ExportMonthlyLeads(int empresaId, string estado, int productoId);
+
+        Task<Response<List<IngresoWrapper>>> ListIncomes(int empresaId);
     }
 }

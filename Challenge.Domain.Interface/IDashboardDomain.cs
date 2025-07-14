@@ -12,5 +12,7 @@ namespace Challenge.Domain.Interface
     {
         Task<List<ReporteLeadWrapper>> ListLeads(int empresaId, int productoId, string estado);
         Task<List<Alerta>> ListAlertas(int rolId);
+
+        Task<List<IngresoWrapper>> ListIncomes(int empresaId);
     }
 }
