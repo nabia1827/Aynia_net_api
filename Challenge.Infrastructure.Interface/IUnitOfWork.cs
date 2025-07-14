@@ -10,5 +10,7 @@ namespace Challenge.Infrastructure.Interface
     {
         IAuthRepository Auth { get; }
 
+        IDashboardRepository Dashboard { get; }
+
     }
 }
