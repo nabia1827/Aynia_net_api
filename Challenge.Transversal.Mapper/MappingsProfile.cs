@@ -10,7 +10,7 @@ namespace Challenge.Transversal.Mapper
         public MappingsProfile() 
         {
             CreateMap<User, UserDto>().ReverseMap();
-           
+            CreateMap<Alerta, AlertaDto>().ReverseMap();
 
         }
     }

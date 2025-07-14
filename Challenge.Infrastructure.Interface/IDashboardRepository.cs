@@ -1,4 +1,5 @@
-﻿using Challenge.Domain.Entity;
+﻿using Challenge.Application.Wrapper;
+using Challenge.Domain.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace Challenge.Infrastructure.Interface
     public interface IDashboardRepository
     {
         Task<int> CountLeadsCurrentMonth();
+        Task<List<ReporteLeadWrapper>> ListLeads(int empresaId, int productoId, string estado);
+        Task<List<Alerta>> ListAlertas(int rolId);
 
         Task<int> GetLeadCountByPlan(int empresaId);
     }

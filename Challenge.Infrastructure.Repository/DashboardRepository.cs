@@ -1,4 +1,5 @@
-﻿using Challenge.Domain.Entity;
+﻿using Challenge.Application.Wrapper;
+using Challenge.Domain.Entity;
 using Challenge.Infrastructure.Data;
 using Challenge.Infrastructure.Interface;
 using Dapper;
@@ -43,5 +44,31 @@ namespace Challenge.Infrastructure.Repository
             return result;
         
     }
+
+        public async Task<List<Alerta>> ListAlertas(int rolId)
+        {
+            using var connection = _context.CreateConnection();
+
+            var sql = "sp_ListAlertas";
+            var parameters = new DynamicParameters();
+            parameters.Add("@rolId", rolId);
+
+            var items = await connection.QueryAsync<Alerta>(sql, parameters, commandType: CommandType.StoredProcedure);
+            return items.ToList();
+        }
+
+        public async Task<List<ReporteLeadWrapper>> ListLeads(int empresaId, int productoId, string estado)
+        {
+            using var connection = _context.CreateConnection();
+
+            var sql = "sp_ListLeads";
+            var parameters = new DynamicParameters();
+            parameters.Add("@empresaId", empresaId);
+            parameters.Add("@productoId", productoId);
+            parameters.Add("@estado", estado);
+
+            var items = await connection.QueryAsync<ReporteLeadWrapper>(sql, parameters, commandType: CommandType.StoredProcedure);
+            return items.ToList();
+        }
     }
 }
