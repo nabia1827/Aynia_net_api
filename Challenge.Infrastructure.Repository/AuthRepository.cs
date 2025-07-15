@@ -45,7 +45,7 @@ namespace Challenge.Infrastructure.Repository
 
             using var connection = _context.CreateConnection();
             var parameters = new DynamicParameters();
-            parameters.Add("@userId", userId);
+            parameters.Add("@usuarioId", userId);
             parameters.Add("@token", token);
             parameters.Add("@refreshToken", refreshToken);
 
@@ -59,7 +59,7 @@ namespace Challenge.Infrastructure.Repository
             var parameters = new DynamicParameters();
             parameters.Add("@token", expiredToken);
             parameters.Add("@refreshToken", refreshToken);
-            parameters.Add("@userId", userId);
+            parameters.Add("@usuarioId", userId);
 
             using var connection = _context.CreateConnection();
             var result = await connection.ExecuteAsync(sp, parameters, commandType: CommandType.StoredProcedure);
