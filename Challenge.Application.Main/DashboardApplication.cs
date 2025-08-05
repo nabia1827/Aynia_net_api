@@ -132,7 +132,7 @@ namespace Challenge.Application.Main
                 return response;
             }
         }
-    }
+
         public async Task<Response<int>> CountLeadsCurrentMonth()
         {
             var response = new Response<int>();
@@ -179,7 +179,7 @@ namespace Challenge.Application.Main
                     response.IsSuccess = true;
                     response.Message = "Leads visualizados correctamente.";
                 }
-              
+
             }
             catch (Exception e)
             {
@@ -192,3 +192,5 @@ namespace Challenge.Application.Main
 
     }
 }
+        
+

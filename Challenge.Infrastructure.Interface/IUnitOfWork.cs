@@ -12,5 +12,7 @@ namespace Challenge.Infrastructure.Interface
 
         IDashboardRepository Dashboard { get; }
 
+        IProductRepository Product { get; }
+
     }
 }
