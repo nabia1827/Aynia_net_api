@@ -14,5 +14,7 @@ namespace Challenge.Infrastructure.Interface
 
         IProductRepository Product { get; }
 
+        ILeadRepository Lead { get; }
+
     }
 }

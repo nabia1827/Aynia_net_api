@@ -70,6 +70,18 @@ namespace Challenge.Services.WebApi.Controllers
         }
 
 
+        [HttpGet("ListIncomes")]
+        public async Task<IActionResult> ListIncomes(int empresaId)
+        {
+            if (empresaId == 0)
+            {
+                return BadRequest();
+            }
+
+            var response = await _application.ListIncomes(empresaId);
+            return Ok(response);
+        }
+
         [HttpGet("CountLeadsCurrentMonth")]
         public async Task<IActionResult> CountLeadsCurrentMonth()
         {

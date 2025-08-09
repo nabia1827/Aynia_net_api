@@ -56,7 +56,17 @@ namespace Challenge.Infrastructure.Repository
             var items = await connection.QueryAsync<Alerta>(sql, parameters, commandType: CommandType.StoredProcedure);
             return items.ToList();
         }
+        public async Task<List<IngresoWrapper>> ListIncomes(int empresaId)
+        {
+            using var connection = _context.CreateConnection();
 
+            var sql = "sp_GetIncomePerMonth";
+            var parameters = new DynamicParameters();
+            parameters.Add("@empresaId", empresaId);
+
+            var incomes = await connection.QueryAsync<IngresoWrapper>(sql, parameters, commandType: CommandType.StoredProcedure);
+            return incomes.ToList();
+        }
         public async Task<List<ReporteLeadWrapper>> ListLeads(int empresaId, int productoId, string estado)
         {
             using var connection = _context.CreateConnection();

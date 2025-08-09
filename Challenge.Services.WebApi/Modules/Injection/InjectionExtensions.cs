@@ -34,6 +34,10 @@ namespace Challenge.Services.WebApi.Modules.Injection
             services.AddScoped<IProductDomain, ProductDomain>();
             services.AddScoped<IProductRepository, ProductRepository>();
 
+            services.AddScoped<ILeadApplication, LeadApplication>();
+            services.AddScoped<ILeadDomain, LeadDomain>();
+            services.AddScoped<ILeadRepository, LeadRepository>();
+
             services.AddScoped<IPasswordHasher, PasswordHasher>();
 
             services.Configure<MailSettings>(configuration.GetSection("MailSettings"));

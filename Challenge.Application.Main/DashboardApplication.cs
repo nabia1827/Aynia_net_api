@@ -133,6 +133,28 @@ namespace Challenge.Application.Main
             }
         }
 
+        public async Task<Response<List<IngresoWrapper>>> ListIncomes(int empresaId)
+        {
+            var response = new Response<List<IngresoWrapper>>();
+            try
+            {
+                var incomes = await _domain.ListIncomes(empresaId);
+
+                response.Data = _mapper.Map<List<IngresoWrapper>>(incomes);
+
+                if (response.Data != null)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Consulta Exitosa";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+            }
+            return response;
+        }
         public async Task<Response<int>> CountLeadsCurrentMonth()
         {
             var response = new Response<int>();

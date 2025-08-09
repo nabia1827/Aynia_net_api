@@ -31,6 +31,11 @@ namespace Challenge.Domain.Core
             return await _unitOfWork.Dashboard.ListAlertas(rolId);
         }
 
+        public async Task<List<IngresoWrapper>> ListIncomes(int empresaId)
+        {
+            return await _unitOfWork.Dashboard.ListIncomes(empresaId);
+        }
+
         public async Task<List<ReporteLeadWrapper>> ListLeads(int empresaId, int productoId, string estado)
         {
             return await _unitOfWork.Dashboard.ListLeads(empresaId, productoId, estado);
