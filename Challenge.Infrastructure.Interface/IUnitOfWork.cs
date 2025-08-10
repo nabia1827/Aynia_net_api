@@ -12,5 +12,9 @@ namespace Challenge.Infrastructure.Interface
         IDashboardRepository Dashboard { get; }
         IEmpresaRepository Empresa { get; }
 
+        IProductRepository Product { get; }
+
+        ILeadRepository Lead { get; }
+
     }
 }

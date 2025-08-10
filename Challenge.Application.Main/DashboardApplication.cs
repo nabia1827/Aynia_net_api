@@ -132,5 +132,87 @@ namespace Challenge.Application.Main
                 return response;
             }
         }
+
+        public async Task<Response<List<IngresoWrapper>>> ListIncomes(int empresaId)
+        {
+            var response = new Response<List<IngresoWrapper>>();
+            try
+            {
+                var incomes = await _domain.ListIncomes(empresaId);
+
+                response.Data = _mapper.Map<List<IngresoWrapper>>(incomes);
+
+                if (response.Data != null)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Consulta Exitosa";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+        public async Task<Response<int>> CountLeadsCurrentMonth()
+        {
+            var response = new Response<int>();
+            try
+            {
+                response.Data = await _domain.CountLeadsCurrentMonth();
+
+                if (response.Data >= 0)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Leads visualizados correctamente";
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Message = "No hay leads en el mes actual";
+                }
+            }
+            catch (Exception e)
+            {
+                response.IsSuccess = false;
+                response.Message = $"Error: {e.Message}";
+            }
+
+            return response;
+        }
+
+        public async Task<Response<int>> GetLeadCountByPlan(int empresaId)
+        {
+            var response = new Response<int>();
+            try
+            {
+                if (empresaId <= 0)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "El Id de la empresa no puede ser menor o igual a cero.";
+                    return response;
+                }
+
+                response.Data = await _domain.GetLeadCountByPlan(empresaId);
+
+                if (response.Data > 0)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Leads visualizados correctamente.";
+                }
+
+            }
+            catch (Exception e)
+            {
+                response.IsSuccess = false;
+                response.Message = $"Error: {e.Message}";
+            }
+
+            return response;
+        }
+
     }
 }
+        
+

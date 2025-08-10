@@ -17,10 +17,23 @@ namespace Challenge.Domain.Core
         {
             _unitOfWork = unitOfWork;
         }
+        public async Task<int> CountLeadsCurrentMonth()
+        {
+            return await _unitOfWork.Dashboard.CountLeadsCurrentMonth();
+        }
+        public async Task<int> GetLeadCountByPlan(int empresaId)
+        {
+            return await _unitOfWork.Dashboard.GetLeadCountByPlan(empresaId);
+        }
 
         public async Task<List<Alerta>> ListAlertas(int rolId)
         {
             return await _unitOfWork.Dashboard.ListAlertas(rolId);
+        }
+
+        public async Task<List<IngresoWrapper>> ListIncomes(int empresaId)
+        {
+            return await _unitOfWork.Dashboard.ListIncomes(empresaId);
         }
 
         public async Task<List<ReporteLeadWrapper>> ListLeads(int empresaId, int productoId, string estado)

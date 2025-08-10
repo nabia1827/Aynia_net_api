@@ -23,7 +23,7 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .Enrich.FromLogContext()
     .WriteTo.Console()
-    .ReadFrom.Configuration(builder.Configuration) // Cargar configuración desde appsettings.json
+    .ReadFrom.Configuration(builder.Configuration) // Cargar configuraciï¿½n desde appsettings.json
     .CreateLogger();
 
 builder.Host.UseSerilog();

@@ -20,6 +20,31 @@ namespace Challenge.Infrastructure.Repository
             _context = context;
         }
 
+        public async Task<int> CountLeadsCurrentMonth()
+        {
+            using var connection = _context.CreateConnection();
+
+            var sql = "sp_CountCurrentMonthLeads";
+            var parameters = new DynamicParameters();
+
+            var CountCurrentMonthLeads = await connection.QuerySingleOrDefaultAsync<int>(sql, parameters, commandType: CommandType.StoredProcedure);
+            return CountCurrentMonthLeads;
+        }
+
+        public async Task<int> GetLeadCountByPlan(int empresaId)
+        {
+       
+            var sp = "sp_GetLeadCountByPlan";
+            var parameters = new DynamicParameters();
+            parameters.Add("@empresaId", empresaId);
+
+            using var connection = _context.CreateConnection();
+            var result = await connection.ExecuteScalarAsync <int> (sp, parameters, commandType: CommandType.StoredProcedure);
+
+            return result;
+        
+    }
+
         public async Task<List<Alerta>> ListAlertas(int rolId)
         {
             using var connection = _context.CreateConnection();
@@ -31,7 +56,17 @@ namespace Challenge.Infrastructure.Repository
             var items = await connection.QueryAsync<Alerta>(sql, parameters, commandType: CommandType.StoredProcedure);
             return items.ToList();
         }
+        public async Task<List<IngresoWrapper>> ListIncomes(int empresaId)
+        {
+            using var connection = _context.CreateConnection();
 
+            var sql = "sp_GetIncomePerMonth";
+            var parameters = new DynamicParameters();
+            parameters.Add("@empresaId", empresaId);
+
+            var incomes = await connection.QueryAsync<IngresoWrapper>(sql, parameters, commandType: CommandType.StoredProcedure);
+            return incomes.ToList();
+        }
         public async Task<List<ReporteLeadWrapper>> ListLeads(int empresaId, int productoId, string estado)
         {
             using var connection = _context.CreateConnection();

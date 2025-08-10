@@ -1,4 +1,5 @@
 ﻿using Challenge.Application.Interface;
+using Challenge.Application.Main;
 using Challenge.Services.WebApi.Helpers;
 using Challenge.Services.WebApi.Models.Requests;
 using Microsoft.AspNetCore.Authorization;
@@ -68,5 +69,39 @@ namespace Challenge.Services.WebApi.Controllers
 
         }
 
+
+        [HttpGet("ListIncomes")]
+        public async Task<IActionResult> ListIncomes(int empresaId)
+        {
+            if (empresaId == 0)
+            {
+                return BadRequest();
+            }
+
+            var response = await _application.ListIncomes(empresaId);
+            return Ok(response);
+        }
+
+        [HttpGet("CountLeadsCurrentMonth")]
+        public async Task<IActionResult> CountLeadsCurrentMonth()
+        {
+            var response = await _application.CountLeadsCurrentMonth();
+
+            return Ok(response);
+        }
+
+        [HttpGet("GetLeadCountByPlan")]
+        public async Task<IActionResult> GetLeadCountByPlan(int empresaId)
+        {
+            if (empresaId <= 0 || empresaId == null)
+                return BadRequest();
+
+            var response = await _application.GetLeadCountByPlan((int)empresaId);
+            if (response.IsSuccess)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response.Message);
+        }
     }
 }
