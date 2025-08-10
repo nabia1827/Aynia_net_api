@@ -12,11 +12,15 @@ namespace Challenge.Infrastructure.Repository
         public IAuthRepository Auth { get; }
         public IDashboardRepository Dashboard { get; }
 
-        public UnitOfWork(IAuthRepository authRepository, IDashboardRepository dashboard)
+        public IEmpresaRepository Empresa { get; }
+
+        public UnitOfWork(IAuthRepository authRepository, IDashboardRepository dashboard, IEmpresaRepository empresa)
         {
             Auth = authRepository;
 
             Dashboard = dashboard;
+
+            Empresa = empresa;
 
         }
     }

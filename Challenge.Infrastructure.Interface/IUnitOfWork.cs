@@ -9,8 +9,8 @@ namespace Challenge.Infrastructure.Interface
     public interface IUnitOfWork
     {
         IAuthRepository Auth { get; }
-
         IDashboardRepository Dashboard { get; }
+        IEmpresaRepository Empresa { get; }
 
     }
 }

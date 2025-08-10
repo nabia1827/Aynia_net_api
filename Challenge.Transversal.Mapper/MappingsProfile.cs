@@ -11,7 +11,7 @@ namespace Challenge.Transversal.Mapper
         {
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<Alerta, AlertaDto>().ReverseMap();
-
+            CreateMap<Empresa, EmpresaDto>().ReverseMap();
         }
     }
 }
